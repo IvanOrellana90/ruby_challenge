@@ -39,14 +39,14 @@ class Terminal
         @shopping_list.each do |code, quantity|
             for product in @product_list do
                 if product.code() == code
-                    # check if exist a pack promotion
+                    # check if exist a pack promotion for this product
                     if product.pack()
-                        # get the total amount of packs in the shopping list
+                        # get the total amount of packs in the shopping list and is multiplied for the pack price
                         total_price = total_price + (quantity / product.pack_quantity()).truncate() * product.pack_price()
-                        # get the total amount per unit discounting the packs
+                        # get the total amount per unit discounting the packs and is multiplied for the regular price
                         total_price = total_price + (quantity % product.pack_quantity() * product.price())
                     else
-                        # get the total amount per unit 
+                        # get the total amount of units and multiplied for the regular price
                         total_price = total_price + (quantity * product.price())
                     end
                 end
