@@ -3,7 +3,7 @@ require_relative "product.rb"
 class Terminal
 
     def initialize
-        @shopping_list = {}
+        @shopping_list = Hash.new
         @product_list = []
     end
 
@@ -16,16 +16,49 @@ class Terminal
         @product_list.push(Product.new("D", 0.15))
     end
 
+    # scan a product and add it to the shopping list
     def scan(code)
         for product in @product_list do
+            # check the product code in the list (if exist)
             if product.code() == code
+                # if is null add the product to the shopping list
                 if @shopping_list[code].nil?
                     @shopping_list[code] = 1
+                # if is not null increment the product to the shopping list
                 else
                     @shopping_list[code] += 1
                 end
             end
         end
+    end
+
+    # calculate the total amount of the shopping list
+    def total()
+        total_price = 0
+        # 
+        @shopping_list.each do |code, quantity|
+            for product in @product_list do
+                if product.code() == code
+                    # check if exist a pack promotion
+                    if product.pack()
+                        # get the total amount of packs in the shopping list
+                        total_price = total_price + (quantity / product.pack_quantity()).truncate() * product.pack_price()
+                        # get the total amount per unit discounting the packs
+                        total_price = total_price + (quantity % product.pack_quantity() * product.price())
+                        puts "Code "+ code + product.code()
+                        puts total_price
+                    else
+                        # get the total amount per unit 
+                        total_price = total_price + (quantity * product.price())
+                        puts "Code "+ code + product.code()
+                        puts total_price
+                    end
+                end
+            end
+        end
+        puts "Total price: " + total_price.to_s
+        # reset shopping list
+        @shopping_list = Hash.new
     end
 
 end
