@@ -45,13 +45,9 @@ class Terminal
                         total_price = total_price + (quantity / product.pack_quantity()).truncate() * product.pack_price()
                         # get the total amount per unit discounting the packs
                         total_price = total_price + (quantity % product.pack_quantity() * product.price())
-                        puts "Code "+ code + product.code()
-                        puts total_price
                     else
                         # get the total amount per unit 
                         total_price = total_price + (quantity * product.price())
-                        puts "Code "+ code + product.code()
-                        puts total_price
                     end
                 end
             end
